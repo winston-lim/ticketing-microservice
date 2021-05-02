@@ -1,16 +1,17 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: ingress-service
+  name: ingress-resource
   annotations:
-    kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/use-regex: 'true'
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   rules:
-    - host: ticketing.dev
+    - host: 34.87.100.217.xip.io
       http:
         paths:
           - path: /api/users/?(.*)
             backend:
               serviceName: auth-srv
-              servicePort: 3000
+              servicePort: 8080

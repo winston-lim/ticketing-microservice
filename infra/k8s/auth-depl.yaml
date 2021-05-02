@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: auth
-          image: us.gcr.io/ticketing-dev-312303/auth
+          image: asia.gcr.io/ticketing-dev-312303/auth
 ---
 apiVersion: v1
 kind: Service
@@ -26,5 +26,5 @@ spec:
   ports:
     - name: auth
       protocol: TCP
-      port: 3000
-      targetPort: 3000
+      port: 8080
+      targetPort: 8080
