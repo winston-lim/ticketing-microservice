@@ -24,21 +24,17 @@ async (req: Request,res: Response)=>{
     const {email, password} = req.body;
     const existingUser = await User.findOne({email});
     if (existingUser) {
-        console.log('Email in use')
         throw new BadRequestError('Email in use');
     }
     const user = User.build({email, password});
-    console.log('user', user)
     try {
-        console.log('saving user...')
         await user.save();
         const userJwt = user.generateAuthToken();
         req.session = {
             jwt: userJwt,
         }
-        res.send(user);
+        res.status(201).send(user);
     } catch(err) {
-        console.log('Database Error')
         throw new DatabaseConnectionError();
     }
 })

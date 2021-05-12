@@ -8,6 +8,5 @@ export const validateRequest = (
 ) => {
     const error = validationResult(req);
     if (!error.isEmpty()) throw new RequestValidationError(error.array());
-    console.log('No validation errors');
     next();
 }
