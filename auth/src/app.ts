@@ -23,8 +23,7 @@ app.use(signInRouter);
 app.use(signOutRouter);
 app.use(signUpRouter);
 
-app.all('/*', ()=> {
-  console.log('No such route')
+app.all('*', ()=> {
   throw new NotFoundError();
 })
 app.use(errorHandler);
