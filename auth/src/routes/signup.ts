@@ -1,12 +1,7 @@
 import express, { Request, Response } from 'express';
 import { body, validationResult } from 'express-validator';
-import jwt from 'jsonwebtoken';
-import { validateRequest } from '../middleware/validate-request';
-import { DatabaseConnectionError } from '../errors/database-validation-error';
-import { RequestValidationError } from '../errors/request-validation-error';
-import { BadRequestError } from '../errors/bad-request-error';
+import { validateRequest, DatabaseConnectionError, BadRequestError } from '@winston-test/common';
 import {User} from '../models/user';
-import { validateLocaleAndSetLanguage } from 'typescript';
 
 const router = express.Router();
 

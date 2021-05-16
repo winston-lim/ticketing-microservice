@@ -1,8 +1,7 @@
 import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
 import jwt from 'jsonwebtoken';
-import { BadRequestError } from '../errors/bad-request-error';
-import { validateRequest } from '../middleware/validate-request';
+import { validateRequest } from '@winston-test/common';
 import { User } from '../models/user';
 import { Password } from '../services/password';
 

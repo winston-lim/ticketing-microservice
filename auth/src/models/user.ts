@@ -1,7 +1,7 @@
 import mongoose, { Document, Schema, Model} from 'mongoose';
 import jwt from 'jsonwebtoken';
 import { Password } from '../services/password';
-import { BadRequestError } from '../errors/bad-request-error';
+import { BadRequestError } from '@winston-test/common';
 export interface baseUser {
     email: string;
     password: string;
