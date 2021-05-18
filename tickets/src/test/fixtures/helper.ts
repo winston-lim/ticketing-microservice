@@ -1,11 +1,10 @@
-import request from 'supertest';
-import { app } from '../../app';
 import jwt from 'jsonwebtoken';
+import { Types } from 'mongoose';
 
 const signin = () => {
 	// Build a JWT payload
 	const payload = {
-		id: 'testid1',
+		id: new Types.ObjectId().toHexString(),
 		email: 'test@id1.com'
 	}
   // Create a JWT
