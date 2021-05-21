@@ -1,7 +1,10 @@
 import express, { Request, Response } from 'express';
 import { requireAuth, validateRequest, DatabaseConnectionError } from '@winston-test/common';
 import { body } from 'express-validator';
+import { TicketCreatedPublisher } from '../events/publishers/ticket-created-publisher';
 import { Ticket, baseTicket } from '../models/ticket';
+import stan from '../stan';
+
 const router = express.Router();
 
 router.post('/api/tickets', 
@@ -26,6 +29,12 @@ router.post('/api/tickets',
     try {
       await ticket.save();
       res.status(201).send(ticket);
+      const publisher = new TicketCreatedPublisher(stan.client).publish({
+        id: ticket.id,
+        title: ticket.title,
+        price: ticket.price,
+        userId: ticket.userId
+      })
     } catch (e) {
       throw new DatabaseConnectionError();
     }
