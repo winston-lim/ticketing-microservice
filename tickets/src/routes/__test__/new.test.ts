@@ -2,6 +2,7 @@ import request from 'supertest';
 import { app } from '../../app';
 import { signin } from '../../test/fixtures/helper';
 import { Ticket } from '../../models/ticket';
+import stan from '../../stan';
 
 it('has a route handler listening to /api/tickets for post request', async ()=> {
   const response = await request(app)
@@ -80,4 +81,18 @@ it('creates a ticket with valid inputs', async () => {
   expect(updatedTickets.length).toEqual(1);
   expect(updatedTickets[0].title).toEqual(title);
   expect(updatedTickets[0].price).toEqual(price);
+});
+
+it('publishes an event when creating a ticket', async () => {
+  let title = 'test title';
+  let price = 100;
+  await request(app)
+    .post('/api/tickets')
+    .set('Cookie', signin())
+    .send({
+      title,
+      price,
+    })
+    .expect(201);
+  expect(stan.client.publish).toHaveBeenCalled();
 });
