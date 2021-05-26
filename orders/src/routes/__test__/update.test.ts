@@ -5,6 +5,7 @@ import { signin } from "../../test/fixtures/helper";
 import mongoose from 'mongoose';
 import { OrderStatus } from '@winston-test/common';
 import { Order } from '../../models/order';
+import stan from '../../stan';
 
 it('can only be accessed if user is signed in', async () => {
   await request(app)
@@ -81,4 +82,25 @@ it('changes the status of an order to cancelled successfully', async () => {
   expect(fetchedOrder!.status).toEqual(OrderStatus.Cancelled);
 });
 
-it.todo('publishes an event');
+it('emits a order cancelled event',  async ()=> {
+  const ticket = Ticket.build({
+    title:'Test',
+    price:20
+  });
+  await ticket.save();
+  
+  const user = signin()
+  const { body: order } = await request(app)
+    .post('/api/orders')
+    .set('Cookie', user)
+    .send({ ticketId: ticket.id })
+    .expect(201);
+
+  const { body: updatedOrder} = await request(app)
+    .patch(`/api/orders/${order.id}`)
+    .set('Cookie', user)
+    .send()
+    .expect(200);
+
+  expect(stan.client.publish).toHaveBeenCalledTimes(2);  
+})
