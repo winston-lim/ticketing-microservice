@@ -1,11 +1,10 @@
-import { NotAuthorizedError, NotFoundError, requireAuth, validateRequest } from '@winston-test/common';
+import { DatabaseConnectionError, NotAuthorizedError, NotFoundError, OrderStatus, requireAuth, validateRequest } from '@winston-test/common';
 import express, { Request, Response } from 'express';
 import { param } from 'express-validator';
 import { Order } from '../models/order';
 
 const router = express.Router();
-
-router.get(
+router.patch( 
   '/api/orders/:orderId', 
   requireAuth,
   param('orderId')
@@ -16,8 +15,16 @@ router.get(
     const order = await Order.findById(req.params.orderId);
     if (!order) throw new NotFoundError();
     if (order.userId!==req.currentUser!.id) throw new NotAuthorizedError();
-    res.send(order);
+    try {
+      await order.set({
+        status: OrderStatus.Cancelled,
+      });
+      await order.save();
+      res.send(order);
+    } catch (e) {
+      throw new DatabaseConnectionError();
+    }
   }
 );
 
-export {router as showOrderRouter}
+export {router as updateOrderRouter}

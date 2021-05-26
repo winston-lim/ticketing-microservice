@@ -2,7 +2,7 @@ import express from 'express';
 import 'express-async-errors';
 import { errorHandler, NotFoundError, currentUser } from '@winston-test/common';
 import cookieSession from 'cookie-session';
-import { deleteOrderRouter } from './routes/delete';
+import { updateOrderRouter } from './routes/update';
 import { indexOrderRouter } from './routes';
 import { newOrderRouter } from './routes/new';
 import { showOrderRouter } from './routes/show';
@@ -19,10 +19,10 @@ app.use(
 );
 app.use(currentUser);
 
-app.use(deleteOrderRouter);
 app.use(indexOrderRouter);
 app.use(newOrderRouter);
 app.use(showOrderRouter);
+app.use(updateOrderRouter);
 
 app.all('*', ()=> {
   throw new NotFoundError();
