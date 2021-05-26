@@ -1,6 +1,8 @@
 import mongoose, { Document, Schema, Model} from 'mongoose';
 import { OrderStatus } from '@winston-test/common';
 import { TicketDoc } from './ticket';
+
+export { OrderStatus }
 export interface baseOrder {
     userId: string;
     status: OrderStatus;
@@ -11,6 +13,7 @@ export interface baseOrder {
 interface baseOrderDocument extends baseOrder, Document{
     createdBy: string;
     updatedAt: string;
+    isReserved(): boolean
 }
 
 interface OrderDocument extends baseOrderDocument {
