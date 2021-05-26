@@ -1,9 +1,11 @@
 import express, { Request, Response } from 'express';
+import stan from '../stan';
 import { BadRequestError, DatabaseConnectionError, NotFoundError, OrderStatus, requireAuth, validateRequest } from '@winston-test/common';
 import { body } from 'express-validator';
 import { Ticket } from '../models/ticket';
 import { Order } from '../models/order';
-   
+import { OrderCreatedPublisher } from '../events/publishers/order-created-publisher';   
+
 const router = express.Router();
 
 const EXPIRATION_WINDOW_SECONDS = 15*60;
@@ -42,6 +44,16 @@ async (req: Request, res: Response)=>{
   })
   try {
     await order.save();
+    await new OrderCreatedPublisher(stan.client).publish({
+      id: order.id,
+      userId: order.userId,
+      status: order.status,
+      expiresAt: order.expiresAt.toISOString(),
+      ticket: {
+        id: ticket.id,
+        price: ticket.price
+      }
+    })
     res.status(201).send(order);
   } catch (e) {
     throw new DatabaseConnectionError();
