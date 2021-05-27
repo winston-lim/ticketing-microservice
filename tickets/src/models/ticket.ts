@@ -1,24 +1,20 @@
 import mongoose, { Document, Schema, Model} from 'mongoose';
-
+import { updateIfCurrentPlugin } from 'mongoose-update-if-current';
 export interface baseTicket {
     title: string;
     price: number;
     userId: string;
 }
 
-interface baseTicketDocument extends baseTicket, Document{
-    createdBy: string;
-    updatedAt: string;
-}
-
-interface TicketDocument extends baseTicketDocument {
+interface TicketDocument extends baseTicket, Document{
+    version: number;
 }
 
 export interface TicketModel extends Model<TicketDocument>{
   build(ticket: baseTicket): TicketDocument;
 }
 
-const TicketSchema = new Schema<TicketDocument, TicketModel>({
+const ticketSchema = new Schema({
     title: {
         type: String,
         required: true
@@ -39,9 +35,11 @@ const TicketSchema = new Schema<TicketDocument, TicketModel>({
         }
     }
 })
+ticketSchema.set('versionKey', 'version');
+ticketSchema.plugin(updateIfCurrentPlugin);
 
-TicketSchema.statics.build = (ticket: baseTicket) => {
+ticketSchema.statics.build = (ticket: baseTicket) => {
   return new Ticket(ticket);
 }
 
-export const Ticket =  mongoose.model<TicketDocument, TicketModel>('Ticket', TicketSchema);
+export const Ticket =  mongoose.model<TicketDocument, TicketModel>('Ticket', ticketSchema);
