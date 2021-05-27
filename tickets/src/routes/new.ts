@@ -30,6 +30,7 @@ router.post('/api/tickets',
       await ticket.save();
       await new TicketCreatedPublisher(stan.client).publish({
         id: ticket.id,
+        version: ticket.version,
         title: ticket.title,
         price: ticket.price,
         userId: ticket.userId
