@@ -46,6 +46,7 @@ async (req: Request, res: Response)=>{
     await order.save();
     await new OrderCreatedPublisher(stan.client).publish({
       id: order.id,
+      version: order.version,
       userId: order.userId,
       status: order.status,
       expiresAt: order.expiresAt.toISOString(),
