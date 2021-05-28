@@ -23,6 +23,7 @@ router.patch(
       await order.save();
       await new OrderCancelledPublisher(stan.client).publish({
         id: order.id,
+        version: order.version,
         ticket: {
           id: order.ticket.id
         }
@@ -34,4 +35,4 @@ router.patch(
   }
 );
 
-export {router as updateOrderRouter}
+export {router as deleteOrderRouter}
