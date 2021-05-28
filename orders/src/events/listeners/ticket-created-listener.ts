@@ -12,6 +12,9 @@ export class TicketCreatedListener extends Listener<TicketCreatedEvent> {
       price: data.price
     });
     try {
+      // ticket.set({
+      //   version: 0,
+      // });
       await ticket.save();
       msg.ack();
     } catch (e) {
