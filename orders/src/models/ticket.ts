@@ -8,6 +8,7 @@ interface baseTicket {
 }
 
 export interface TicketDoc extends Document {
+	id: string;
 	title: string;
 	price: number;
 	version: number;
