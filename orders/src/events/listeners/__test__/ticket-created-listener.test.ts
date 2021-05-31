@@ -1,9 +1,9 @@
 import { TicketCreatedEvent } from '@winston-test/common';
 import { Message, Stan } from 'node-nats-streaming';
 import { Types } from 'mongoose';
-import stan from "../../../__mocks__/stan";
 import { TicketCreatedListener } from "../ticket-created-listener";
 import { Ticket } from '../../../models/ticket';
+import stan from '../../../stan';
 
 const setup = async () => {
   const listener = new TicketCreatedListener(stan.client as unknown as Stan);
