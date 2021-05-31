@@ -3,6 +3,7 @@ import { app } from '../../app';
 import { signin } from '../../test/fixtures/helper';
 import { Types } from 'mongoose';
 import stan from '../../stan';
+import { Ticket } from '../../models/ticket';
 it('returns a 404 if ticket id does not exist', async ()=> {
   const id = new Types.ObjectId().toHexString();
   await request(app)
@@ -135,4 +136,29 @@ it('publishes an event when updating a ticket', async () => {
     })
     .expect(200);
   expect(stan.client.publish).toHaveBeenCalled();
+});
+
+it('rejects updates if the ticket is reserved', async () => {
+  const cookie = signin();
+  const response = await request(app)
+    .post('/api/tickets')
+    .set('Cookie', cookie)
+    .send({
+      title: 'Valid title',
+      price: 20
+    }).expect(201);
+  const ticket = await Ticket.findById(response.body.id);
+  ticket!.set({
+    orderId: 'someValue'
+  });
+  await ticket!.save();
+
+  await request(app)
+    .put(`/api/tickets/${response.body.id}`)
+    .set('Cookie', cookie)
+    .send({
+      title: 'Updated title',
+      price: 21,
+    })
+    .expect(400);
 });
