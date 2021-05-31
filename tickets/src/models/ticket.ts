@@ -8,6 +8,7 @@ export interface baseTicket {
 
 interface TicketDocument extends baseTicket, Document{
     version: number;
+    orderId?: string;
 }
 
 export interface TicketModel extends Model<TicketDocument>{
@@ -26,6 +27,9 @@ const ticketSchema = new Schema({
     userId: {
       type: String,
       required: true,
+    },
+    orderId: {
+      type: String,
     }
 }, {
     toJSON: {

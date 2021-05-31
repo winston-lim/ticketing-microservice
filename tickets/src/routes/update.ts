@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { requireAuth, validateRequest, DatabaseConnectionError, NotFoundError, NotAuthorizedError } from '@winston-test/common';
+import { requireAuth, validateRequest, DatabaseConnectionError, NotFoundError, NotAuthorizedError, BadRequestError } from '@winston-test/common';
 import { body } from 'express-validator';
 import stan from '../stan';
 import { Ticket } from '../models/ticket';
@@ -22,6 +22,7 @@ router.put('/api/tickets/:id',
     const { title, price } = req.body;
     const ticket = await Ticket.findById(req.params.id);
     if (!ticket) throw new NotFoundError();
+    if (ticket.orderId) throw new BadRequestError('Cannot edit a reserved ticket');
     if (ticket.userId !== req.currentUser!.id) throw new NotAuthorizedError();
     try {
       ticket.set({
