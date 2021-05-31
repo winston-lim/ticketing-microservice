@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
 import {app} from './app';
+import { OrderCancelledListener } from './events/listeners/order-cancelled-listener';
+import { OrderCreatedListener } from './events/listeners/order-created-listener';
 import stan from './stan';
 
 const start = async ()=> {
@@ -26,6 +28,10 @@ const start = async ()=> {
     });
     process.on('SIGINT', ()=>stan.client.close());
     process.on('SIGTERM', ()=>stan.client.close());
+
+    new OrderCreatedListener(stan.client).listen();
+    new OrderCancelledListener(stan.client).listen();
+
     await mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
