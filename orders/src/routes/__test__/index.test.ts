@@ -1,3 +1,4 @@
+import { Types } from 'mongoose';
 import request from 'supertest';
 import { app } from '../../app';
 import { Order, OrderStatus } from '../../models/order';
@@ -6,6 +7,7 @@ import { signin } from '../../test/fixtures/helper';
 
 const buildTicket = async () => {
   const ticket = Ticket.build({
+    id: new Types.ObjectId().toHexString(),
     title: 'test',
     price: 20,
   });
