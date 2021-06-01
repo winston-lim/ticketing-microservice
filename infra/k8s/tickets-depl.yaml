@@ -40,7 +40,7 @@ spec:
   selector:
     app: tickets
   ports:
-    - name: auth
+    - name: tickets
       protocol: TCP
       port: 3000
       targetPort: 3000

@@ -40,7 +40,7 @@ spec:
   selector:
     app: orders
   ports:
-    - name: auth
+    - name: orders
       protocol: TCP
       port: 3000
       targetPort: 3000
