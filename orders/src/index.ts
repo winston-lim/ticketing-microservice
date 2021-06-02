@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import {app} from './app';
+import { ExpirationCompleteListener } from './events/listeners/expiration-complete-listener';
 import { TicketCreatedListener } from './events/listeners/ticket-created-listener';
 import { TicketUpdateListener } from './events/listeners/ticket-updated-listener';
 import stan from './stan';
@@ -31,6 +32,7 @@ const start = async ()=> {
 
     new TicketCreatedListener(stan.client).listen();
     new TicketUpdateListener(stan.client).listen();
+    new ExpirationCompleteListener(stan.client).listen();
 
     await mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
