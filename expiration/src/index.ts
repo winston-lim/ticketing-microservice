@@ -1,4 +1,5 @@
 import stan from './stan';
+import { OrderCreatedListener } from './events/listeners/order-created-listener';
 
 const start = async ()=> {
   if (!process.env.NATS_URL) {
@@ -18,6 +19,8 @@ const start = async ()=> {
     });
     process.on('SIGINT', ()=>stan.client.close());
     process.on('SIGTERM', ()=>stan.client.close());
+
+    new OrderCreatedListener(stan.client).listen();
   } catch(err) {
     console.error(err);
   }
