@@ -17,7 +17,6 @@ export class TicketUpdateListener extends Listener<TicketUpdatedEvent> {
 		msg: Message
 	) {
 		const ticket = await Ticket.eventQuery(data);
-    console.log('event query', ticket);
     if (!ticket) throw new Error('Ticket not found');
 		try {
       const { title, price, version } = data;
@@ -26,9 +25,7 @@ export class TicketUpdateListener extends Listener<TicketUpdatedEvent> {
         price,
         //version
 			});
-      console.log('set: ', ticket);
 			await ticket!.save();
-      console.log('saved');
 			msg.ack();
 		} catch (e) {
       console.log(e);

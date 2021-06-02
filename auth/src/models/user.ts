@@ -8,8 +8,6 @@ export interface baseUser {
 }
 
 interface baseUserDocument extends baseUser, Document{
-    createdBy: string;
-    updatedAt: string;
     generateAuthToken(): string;
 }
 
