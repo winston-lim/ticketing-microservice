@@ -18,7 +18,6 @@ export class OrderCancelledListener extends Listener<OrderCancelledEvent> {
     });
     try {
       await order.save();
-      console.log(order);
       msg.ack();
     } catch(e) {
       console.log(e);
