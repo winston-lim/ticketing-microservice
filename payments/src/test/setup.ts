@@ -1,7 +1,10 @@
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
+require('dotenv').config();
 
 jest.mock('../stan.ts');
+//jest.mock('../stripe.ts');
+
 
 let mongo: any;
 beforeAll(async()=> {
@@ -12,7 +15,7 @@ beforeAll(async()=> {
     await mongoose.connect(mongUri, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
-    })
+    });
 })
 
 beforeEach(async ()=>{
@@ -26,4 +29,4 @@ beforeEach(async ()=>{
 afterAll(async () => {
     await mongo.stop();
     await mongoose.connection.close();
-})
+});
