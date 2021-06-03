@@ -105,3 +105,5 @@ dist
 
 # Self-defined
 private-key.json
+nats-test/
+.env
