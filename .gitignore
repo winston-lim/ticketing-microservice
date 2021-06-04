@@ -107,3 +107,4 @@ dist
 private-key.json
 nats-test/
 .env
+.DS_Store
