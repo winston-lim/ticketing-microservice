@@ -11,9 +11,17 @@ const Header = ({ currentUser }) => {
       href: '/auth/signin',
     },
     currentUser && {
+      label: 'Sell',
+      href: '/tickets/new',
+    },
+    currentUser && {
+      label: 'My Orders',
+      href: '/orders',
+    },
+    currentUser && {
       label: 'Sign out',
       href: '/auth/signout',
-    }
+    },
   ]
     .filter(linkConfig=>linkConfig)
     .map(({ label, href })=>{
@@ -28,14 +36,16 @@ const Header = ({ currentUser }) => {
 
 	return (
 		<nav className="navbar navbar-light bg-light">
-			<Link href="/">
-				<a className="navbar-brand">Ticketing.dev</a>
-			</Link>
-			<div className="d-flex justify-content-end">
-				<ul className="nav d-flex align-items-center">
-          {links}
-				</ul>
-			</div>
+			<div className='container'>
+        <Link href="/">
+          <a className="navbar-brand">Ticketing.dev</a>
+        </Link>
+        <div className="d-flex justify-content-end">
+          <ul className="nav d-flex align-items-center">
+            {links}
+          </ul>
+        </div>
+      </div>
 		</nav>
 	);
 };
