@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(
   cookieSession({
     signed: false, //no encryption on cookie content
-    secure: process.env.NODE_ENV!=='test',  //require a HTTPS connection for this route
+    secure: false,
   })
 );
 app.use(currentUser);
