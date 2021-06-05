@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: expiration
-          image: asia.gcr.io/ticketing-dev-312303/expiration
+          image: winstonlim1/ticketing-expiration
           env:
             - name: NATS_URL
               value: 'http://nats-srv:4222'

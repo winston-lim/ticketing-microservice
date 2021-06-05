@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: client
-          image: asia.gcr.io/ticketing-dev-312303/client
+          image: winstonlim1/ticketing-client
 ---
 apiVersion: v1
 kind: Service
