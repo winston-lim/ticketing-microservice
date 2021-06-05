@@ -8,7 +8,7 @@ metadata:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   rules:
-    - host: ticketing.dev
+    - host: www.winston-lim.com
       http:
         paths:
           - path: /api/users/?(.*)
